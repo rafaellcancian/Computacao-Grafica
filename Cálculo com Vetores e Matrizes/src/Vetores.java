@@ -1,11 +1,11 @@
 
 import javax.swing.JOptionPane;
 
-public class Main extends javax.swing.JFrame {
+public class Vetores extends javax.swing.JFrame {
 
     int TAMANHO = 3;
 
-    public Main() {
+    public Vetores() {
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -25,22 +25,31 @@ public class Main extends javax.swing.JFrame {
         jTextValorZAux = new javax.swing.JTextField();
         jLabelNovoVetor = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cálculo com Vetores");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jTextValorX.setBackground(new java.awt.Color(240, 240, 240));
         jTextValorX.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextValorX.setText("0");
+        jTextValorX.setToolTipText("");
         jTextValorX.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Valor de X:"));
 
         jLabelExercicio.setText("Insira os valores X, Y e Z de um vetor de 3 dimensões:");
 
         jTextValorY.setBackground(new java.awt.Color(240, 240, 240));
         jTextValorY.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextValorY.setText("0");
         jTextValorY.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Valor de Y:"));
 
         jTextValorZ.setBackground(new java.awt.Color(240, 240, 240));
         jTextValorZ.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextValorZ.setText("0");
         jTextValorZ.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Valor de Z:"));
 
         jButtonCalcular.setText("CALCULAR");
@@ -60,16 +69,19 @@ public class Main extends javax.swing.JFrame {
 
         jTextValorXAux.setBackground(new java.awt.Color(240, 240, 240));
         jTextValorXAux.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextValorXAux.setText("0");
         jTextValorXAux.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Valor de X:"));
         jTextValorXAux.setEnabled(false);
 
         jTextValorYAux.setBackground(new java.awt.Color(240, 240, 240));
         jTextValorYAux.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextValorYAux.setText("0");
         jTextValorYAux.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Valor de Y:"));
         jTextValorYAux.setEnabled(false);
 
         jTextValorZAux.setBackground(new java.awt.Color(240, 240, 240));
         jTextValorZAux.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextValorZAux.setText("0");
         jTextValorZAux.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Valor de Z:"));
         jTextValorZAux.setEnabled(false);
 
@@ -121,7 +133,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jTextValorXAux, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextValorYAux, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextValorZAux, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                .addGap(18, 18, 18)
                 .addComponent(jComboOpcoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonCalcular)
@@ -247,6 +259,12 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jComboOpcoesActionPerformed
 
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        this.dispose();
+        MainFrame main = new MainFrame();
+        main.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
+
     public void desabilitarFields() {
         jTextValorXAux.setEnabled(false);
         jTextValorYAux.setEnabled(false);
@@ -262,41 +280,6 @@ public class Main extends javax.swing.JFrame {
     public double calcularTamanhoVetor(double X, double Y, double Z) {
         double tamanho = Math.sqrt((Math.pow(X, 2)) + (Math.pow(Y, 2)) + (Math.pow(Z, 2)));
         return tamanho;
-    }
-
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Main().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

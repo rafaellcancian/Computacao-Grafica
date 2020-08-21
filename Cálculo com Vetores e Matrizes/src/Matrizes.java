@@ -1,11 +1,11 @@
 
 import javax.swing.JOptionPane;
 
-public class Main extends javax.swing.JFrame {
+public class Matrizes extends javax.swing.JFrame {
 
     int TAMANHO = 3;
 
-    public Main() {
+    public Matrizes() {
         initComponents();
         setLocationRelativeTo(null);
         jTextAreaResultados.setEditable(false);
@@ -31,16 +31,21 @@ public class Main extends javax.swing.JFrame {
         jTextAreaResultados = new javax.swing.JTextArea();
         jLabelResultados = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cálculo com Matrizes");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jTableMatrizA.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jTableMatrizA.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                { new Double(2.0),  new Double(3.0),  new Double(5.0)},
-                { new Double(1.0),  new Double(5.0),  new Double(7.0)},
-                { new Double(3.0),  new Double(4.0),  new Double(8.0)}
+                { new Double(0.0),  new Double(0.0),  new Double(0.0)},
+                { new Double(0.0),  new Double(0.0),  new Double(0.0)},
+                { new Double(0.0),  new Double(0.0),  new Double(0.0)}
             },
             new String [] {
                 "Coluna 1", "Coluna 2", "Coluna 3"
@@ -62,9 +67,9 @@ public class Main extends javax.swing.JFrame {
         jTableMatrizB.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jTableMatrizB.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                { new Double(2.0),  new Double(2.0),  new Double(2.0)},
-                { new Double(2.0),  new Double(2.0),  new Double(2.0)},
-                { new Double(2.0),  new Double(2.0),  new Double(2.0)}
+                { new Double(0.0),  new Double(0.0),  new Double(0.0)},
+                { new Double(0.0),  new Double(0.0),  new Double(0.0)},
+                { new Double(0.0),  new Double(0.0),  new Double(0.0)}
             },
             new String [] {
                 "Coluna 1", "Coluna 2", "Coluna 3"
@@ -101,7 +106,7 @@ public class Main extends javax.swing.JFrame {
 
         jTextValorX.setBackground(new java.awt.Color(240, 240, 240));
         jTextValorX.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextValorX.setText("2");
+        jTextValorX.setText("0");
         jTextValorX.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Valor de X:"));
         jTextValorX.setEnabled(false);
 
@@ -109,13 +114,13 @@ public class Main extends javax.swing.JFrame {
 
         jTextValorY.setBackground(new java.awt.Color(240, 240, 240));
         jTextValorY.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextValorY.setText("3");
+        jTextValorY.setText("0");
         jTextValorY.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Valor de Y:"));
         jTextValorY.setEnabled(false);
 
         jTextValorZ.setBackground(new java.awt.Color(240, 240, 240));
         jTextValorZ.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextValorZ.setText("5");
+        jTextValorZ.setText("0");
         jTextValorZ.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Valor de Z:"));
         jTextValorZ.setEnabled(false);
 
@@ -310,6 +315,12 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jComboOpcoesActionPerformed
 
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        this.dispose();
+        MainFrame main = new MainFrame();
+        main.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
+
    public void desabilitarMatrizB() {
         jTableMatrizB.setEnabled(false);
     }
@@ -383,39 +394,6 @@ public class Main extends javax.swing.JFrame {
                 jTextAreaResultados.append(matrizC[i][j] + "\t");
             }
         }
-    }
-    
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Main().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
