@@ -62,9 +62,9 @@ public class Main extends javax.swing.JFrame {
         jTableMatrizB.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jTableMatrizB.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                { new Double(0.0),  new Double(0.0),  new Double(0.0)},
-                { new Double(0.0),  new Double(0.0),  new Double(0.0)},
-                { new Double(0.0),  new Double(0.0),  new Double(0.0)}
+                { new Double(2.0),  new Double(2.0),  new Double(2.0)},
+                { new Double(2.0),  new Double(2.0),  new Double(2.0)},
+                { new Double(2.0),  new Double(2.0),  new Double(2.0)}
             },
             new String [] {
                 "Coluna 1", "Coluna 2", "Coluna 3"
@@ -235,7 +235,30 @@ public class Main extends javax.swing.JFrame {
                 break;
             }
             case 5: {
-                operacoesMatrizes(matrizA, 2);
+                jTextAreaResultados.setText("");
+                double matrizB[][] = new double[3][3];
+                double matrizC[][] = new double[3][3];
+                
+                for (int i = 0; i < TAMANHO; i++) {
+                    for (int j = 0; j < TAMANHO; j++) {
+                        matrizB[i][j] = (double) jTableMatrizB.getValueAt(i, j);
+                    }
+                }
+                
+                for (int i = 0; i < TAMANHO; i++) {
+                    if (i != 0) {
+                        jTextAreaResultados.append("\n");
+                        
+                    } else {
+                        jTextAreaResultados.append("Matriz C:\n");
+                    }
+                    for (int j = 0; j < TAMANHO; j++) {
+                        for (int k = 0; k < TAMANHO; k++) {
+                            matrizC[i][j] += (matrizA[i][k] * matrizB[k][j]);                            
+                        }
+                        jTextAreaResultados.append(matrizC[i][j] + "\t");
+                    }
+                }
                 break;
             }
             case 6: {
@@ -329,7 +352,6 @@ public class Main extends javax.swing.JFrame {
                 switch (operador) {
                     case 0: matrizC[i][j] = matrizA[i][j] + matrizB[i][j]; break;
                     case 1: matrizC[i][j] = matrizA[i][j] - matrizB[i][j]; break;
-                    case 2: matrizC[i][j] = matrizA[i][j] * matrizB[i][j]; break;
                 }
                 jTextAreaResultados.append(matrizC[i][j] + "\t");
             }
