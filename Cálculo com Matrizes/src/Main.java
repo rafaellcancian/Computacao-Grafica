@@ -248,7 +248,6 @@ public class Main extends javax.swing.JFrame {
                 for (int i = 0; i < TAMANHO; i++) {
                     if (i != 0) {
                         jTextAreaResultados.append("\n");
-                        
                     } else {
                         jTextAreaResultados.append("Matriz C:\n");
                     }
