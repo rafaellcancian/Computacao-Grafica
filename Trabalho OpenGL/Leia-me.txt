@@ -1,0 +1,39 @@
+O objetivo deste trabalho é a modelagem de uma cena interativa utilizando OpenGL moderno, conforme exemplos vistos em aula.
+
+Esta cena deverá conter:
+
+- Uma sala (paredes, chão, teto)
+Foi utilizado a casa como sala.
+
+- Diferentes objetos, estes modelados a partir de arquivos wavefront (.obj)
+Os objetos utilizados foram: casa, lixeira, mesa, vasoFlor e vasoQuebrado.
+
+- Pelo menos duas fontes de luz, com interação com pelo menos uma delas (ligar/desligar)
+Há duas fontes de luz na cena, uma dentro da casa que pode ser ligada e desligada com os botões C e V, e outra fora da casa como se fosse o sol.
+
+- Pelo menos um tipo de interação com a cena/objetos da cena (abrir uma porta, ligar uma lâmpada)
+A interação utilizada foi quebrar o vaso uma única vez com a tecla E, e substituir ele por um objeto que é o vasoQuebrado.
+
+- Navegação pela cena utilizando uma câmera virtual semelhante a jogos FPS (First-person Shooter), com manipulação de eventos de entrada do mouse e do teclado
+Ver os comandos da navegação abaixo.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Comandos:
+A navegação pode ser feita com as teclas:
+- W, A, S e D: Movimentação Frente/Esquerda/Atrás/Direita
+- Espaço e X: Subir/Descer
+- Movimentar o mouse para os cantos da janela, irá fazer a tela girar.
+
+Interações:
+- E: Quebra o vaso.
+- C e V: Liga/Desliga a luz dentro da casa.
+
+Observações:
+- Resolução da janela: 1280x720
+- Ao quebrar o vaso poderá dar uma travada de uns 5 segundos no programa, pois tive que recarregar os objetos para adicioná-los sem bugar aos points.
+- A parte que eu implementei está toda comentada.
+- Este código teve como base o Ex8 - Luzes.py
+- Coloquei um requirements.txt dentro do .zip, pois utilizei uma venv. (utilizar pip install -r requirements.txt em caso de erro)
+
+Trabalho feito por: Rafael Cancian
