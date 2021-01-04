@@ -1,3 +1,4 @@
 glfw==2.0.0
 pyopengl==3.1.5
 numpy==1.19.3
+Pillow==8.1.0

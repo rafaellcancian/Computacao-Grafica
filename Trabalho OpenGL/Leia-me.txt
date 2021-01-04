@@ -35,5 +35,6 @@ Observações:
 - A parte que eu implementei está toda comentada.
 - Este código teve como base o Ex8 - Luzes.py
 - Coloquei um requirements.txt dentro do .zip, pois utilizei uma venv. (utilizar pip install -r requirements.txt em caso de erro)
+- Opcionalmente coloquei uma imagem de textura tendo como pontos os vértices normais em todos os objetos.
 
 Trabalho feito por: Rafael Cancian

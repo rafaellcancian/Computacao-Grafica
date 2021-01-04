@@ -2,6 +2,8 @@ import glfw
 from OpenGL.GL import *
 import OpenGL.GL.shaders
 import numpy as np
+import PIL
+from PIL import Image
 
 Window = None
 Shader_programm = None
@@ -73,6 +75,15 @@ def inicializaObjetos():
     glEnableVertexAttribArray(1)
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, None)
 
+    # VBO das texturas
+    texcoords = normais
+    texcoords = np.array(texcoords, dtype=np.float32)
+    tvbo = glGenBuffers(1)
+    glBindBuffer(GL_ARRAY_BUFFER, tvbo)
+    glBufferData(GL_ARRAY_BUFFER, texcoords, GL_STATIC_DRAW)
+    glEnableVertexAttribArray(2)
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, None)
+
 def inicializaShaders():
     global Shader_programm
     # Especificação do Vertex Shader:
@@ -80,9 +91,12 @@ def inicializaShaders():
         #version 400
         layout(location = 0) in vec3 vertex_posicao;
         layout(location = 1) in vec3 vertex_normal;
+        layout(location = 2) in vec2 vertex_textures;
         out vec3 vertex_posicao_cam, vertex_normal_cam;
+        out vec2 textcoord;
         uniform mat4 matriz, viewLado, viewCima, proj;
         void main () {
+            textcoord = vertex_textures;
             vertex_posicao_cam = vec3 (viewLado * viewCima * matriz * vec4 (vertex_posicao, 1.0)); //posição do objeto em relação a CÂMERA
             vertex_normal_cam = vec3 (viewLado * viewCima * matriz * vec4 (vertex_normal, 0.0)); //normais do objeto em relação a CÂMERA
             gl_Position = proj * viewLado * viewCima * matriz * vec4 (vertex_posicao, 1.0);
@@ -97,6 +111,7 @@ def inicializaShaders():
     fragment_shader = """
         #version 400
 		in vec3 vertex_posicao_cam, vertex_normal_cam;
+        in vec2 textcoord;
         
         //propriedades de uma luz pontual
         uniform vec3 luz_posicao;
@@ -111,6 +126,9 @@ def inicializaShaders():
         uniform float especular_exp;//expoente especular
         
         uniform mat4 viewLado;
+
+        uniform sampler2D basic_texture;
+
 		out vec4 frag_colour;
 		void main () {
             /*
@@ -157,7 +175,8 @@ def inicializaShaders():
             vec3 Is = Ls * Ks * fator_especular;
 
             /*A cor final do fragmento é a soma das 3 componentes de iluminação*/
-		    frag_colour = vec4 (Ia+Id+Is,1.0);
+		    vec4 texel = texture(basic_texture, textcoord);
+            frag_colour = texel * vec4 (Ia+Id+Is,1.0);
 		}
     """
     fs = OpenGL.GL.shaders.compileShader(fragment_shader, GL_FRAGMENT_SHADER)
@@ -362,7 +381,7 @@ def trataTeclado():
         travarLuz = 0
 
     if ((glfw.PRESS == glfw.get_key(Window, glfw.KEY_V) and (travarLuz == 0))):
-        luz = [0.0, 0.0, 0.0]
+        luz = [0.1, 0.1, 0.1]
         travarLuz = 1
 
 def especificaMaterialObjeto(KaR, KaG, KaB, KdR, KdG, KdB, KsR, KsG, KsB, n):
@@ -395,7 +414,7 @@ def especificaLuz():
     glUniform3fv(luz_posicaoloc, 1, luz_posicao)
 
     #Fonte de luz ambiente
-    La = np.array([0.2, 0.2, 0.2])
+    La = np.array(luz)
     La_loc = glGetUniformLocation(Shader_programm, "La")#envia o array da Luz Ambiente para o shader
     glUniform3fv(La_loc, 1, La)
 
@@ -405,9 +424,35 @@ def especificaLuz():
     glUniform3fv(Ld_loc, 1, Ld)
     
     #Fonte de luz especular
-    Ls = np.array([1.0, 1.0, 1.0])
+    Ls = np.array([0.5, 0.5, 0.5])
     Ls_loc = glGetUniformLocation(Shader_programm, "Ls")#envia o array da Luz Especular para o shader
     glUniform3fv(Ls_loc, 1, Ls)
+
+def inicializaTexturas():
+    global textura, Shader_programm
+    
+    #carrega a imagem
+    img = Image.open("textura.png").transpose(Image.FLIP_TOP_BOTTOM)
+    img_data = np.frombuffer(img.tobytes(), np.uint8) #converte o arquivo em bytes
+    width, height = img.size #pega a largura e altura da imagem
+
+    #gera a textura para a imagem
+    textura = glGenTextures(1) #gera um id para a textura
+    glBindTexture(GL_TEXTURE_2D, textura) #ativa a textura criada a cima
+    #como a textura "embrulha" o objeto
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
+    #com qual qualidade a textura "embrulha" o objeto
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR) #qual a qualidade que uma textura grande diminui o seu tamanho
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR) #qual a qualidade que uma textura pequena aumenta o seu tamanho
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img_data) #gera a textura OpenGL a partir da imagem
+    #glGenerateMipmap(GL_TEXTURE_2D) #gera a textura OpenGL a partir da imagem
+
+def ativaTextura():
+    #glActiveTexture(GL_TEXTURE0)
+    glBindTexture(GL_TEXTURE_2D, textura)
+    texture_loc = glGetUniformLocation(Shader_programm, "basic_texture")
+    glUniform1i(texture_loc, 0)
 
 def inicializaRenderizacao():
     global Window, Shader_programm, Vao, WIDTH, HEIGHT, Tempo_entre_frames, pontos
@@ -431,6 +476,7 @@ def inicializaRenderizacao():
 
         #ativa o shader
         glUseProgram(Shader_programm)
+        ativaTextura() #ativa a textura que será utilizada para renderizar o quadro
         especificaLuz() #parâmetros da fonte de luz
                                 
         inicializaCamera()#configuramos a câmera
@@ -504,6 +550,7 @@ def main():
     carregarObjeto("obj/lixeira")
 
     inicializaOpenGL()
+    inicializaTexturas()
     inicializaObjetos()
     inicializaShaders()
     inicializaRenderizacao()
